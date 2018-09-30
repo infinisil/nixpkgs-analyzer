@@ -1,0 +1,19 @@
+diff --git a/pkgs/top-level/stage.nix b/pkgs/top-level/stage.nix
+index 7637371a40f..ce6f2b2c60b 100644
+--- a/pkgs/top-level/stage.nix
++++ b/pkgs/top-level/stage.nix
+@@ -172,6 +172,13 @@ let
+   ] ++ overlays ++ [
+     stdenvOverrides ]);
+ 
++  mapIt = path: attrs:
++    lib.mapAttrs (name: value:
++      builtins.trace ("attrpath: " + lib.concatStringsSep "." (path ++ [name]))
++      (if lib.isDerivation value then value
++      else if lib.isAttrs value then mapIt (path ++ [name]) value
++      else value)
++    ) attrs;
+ in
+   # Return the complete set of packages.
+-  lib.fix toFix
++  lib.fix (x: mapIt [] (toFix x))
