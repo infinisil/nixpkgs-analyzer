@@ -1,0 +1,7 @@
+* Nixpkgs analyzer
+
+Program to compute the importance of nixpkgs attributes by looking at how often they're used by other attributes.
+
+** Current Problem
+
+https://github.com/jwiegley/async-pool/issues/4
